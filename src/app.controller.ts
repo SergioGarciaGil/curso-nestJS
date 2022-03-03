@@ -1,4 +1,5 @@
-import { Controller, Get, Param} from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { query } from 'express';
 import { AppService } from './app.service';
 
 @Controller()
@@ -15,14 +16,36 @@ export class AppController {
   }
   @Get('/ruta')
   hello() {
-    return 'ruta/sass'
+    return 'ruta/sass';
   }
+  @Get('products/filter')
+  getFilter() {
+    return('Yo soy filter')
+    }
+  //DECORADOR PRA VARIOS PRODUCTOS QUERY
+  // @Get('products')
+  // getProducts(@Query() params: any) {
+  //   const { limit, offset } = params;
+  //   return `products: limit=>${limit} offSet=>${offset}`
+  //   }
+
+  @Get('products')
+  getProducts(
+    @Query('brand') brand: string,
+    @Query('limit') limit: number=100,
+    @Query('offset') offset: number=0,
+  ) {
+    return `products: brand =>${brand} limit=>${limit} offset=>${offset}`;
+  }
+  
+
   @Get('products/:productId')
   getProduct(@Param('productId') productId: string) {
-    return `product:  ${productId}`
+    return `product:  ${productId}`;
   }
+
   @Get('categories/:id/products/:productId')
   getCategory(@Param('productId') productId: string, @Param('id') id: string) {
-    return `product ${productId} and ${id}`
+    return `product ${productId} and ${id}`;
   }
 }

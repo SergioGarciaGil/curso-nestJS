@@ -1,10 +1,12 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Post,Body } from '@nestjs/common';
 import { query } from 'express';
+import { get } from 'http';
+import { useStore } from 'react-redux';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   getHello(): string {
@@ -14,38 +16,17 @@ export class AppController {
   newEnpoint() {
     return 'yo soy nuevo';
   }
+ 
   @Get('/ruta')
   hello() {
-    return 'ruta/sass';
-  }
-  @Get('products/filter')
-  getFilter() {
-    return('Yo soy filter')
+    return {
+      message: 'ruta/sass'
     }
-  //DECORADOR PRA VARIOS PRODUCTOS QUERY
-  // @Get('products')
-  // getProducts(@Query() params: any) {
-  //   const { limit, offset } = params;
-  //   return `products: limit=>${limit} offSet=>${offset}`
-  //   }
-
-  @Get('products')
-  getProducts(
-    @Query('brand') brand: string,
-    @Query('limit') limit: number=100,
-    @Query('offset') offset: number=0,
-  ) {
-    return `products: brand =>${brand} limit=>${limit} offset=>${offset}`;
   }
   
-
-  @Get('products/:productId')
-  getProduct(@Param('productId') productId: string) {
-    return `product:  ${productId}`;
-  }
-
-  @Get('categories/:id/products/:productId')
-  getCategory(@Param('productId') productId: string, @Param('id') id: string) {
-    return `product ${productId} and ${id}`;
-  }
+ 
 }
+  
+  
+
+  

@@ -1,12 +1,23 @@
-import { Controller, Get, Query, Param, Post, Body, Put, Delete,HttpStatus, HttpCode  } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  Post,
+  Body,
+  Put,
+  Delete,
+  HttpStatus,
+  HttpCode,
+  // ParseIntPipe,
+} from '@nestjs/common';
 import { ProductsService } from './../services/products.service';
+import {ParseIntPipe} from '../common/parse-int.pipe'
 
 @Controller('products')
 export class ProductsController {
-  constructor(private productsService: ProductsService) {
-    
-  }
-   
+  constructor(private productsService: ProductsService) {}
+
   //DECORADOR PRA VARIOS PRODUCTOS QUERY
   // @Get('products')
   // getProducts(@Query() params: any) {
@@ -16,8 +27,8 @@ export class ProductsController {
   @Get('filter')
   getFilter() {
     return {
-      message:('Yo soy filter!')
-    }
+      message: 'Yo soy filter!',
+    };
   }
   @Get()
   getProducts(
@@ -30,7 +41,6 @@ export class ProductsController {
     // }
     return this.productsService.findAll();
   }
-   
 
   // @Get(':productId')
   // getProduct(@Param('productId') productId: string) {
@@ -40,34 +50,31 @@ export class ProductsController {
   // }
   @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-   getProduct(@Param('id') id: number) {
+  getProduct(@Param('id', ParseIntPipe) id: number) {
     // return {
     //   id,
     //   message: `product: ${id}`
     // }
-    return this.productsService.findOne(+id);
-    }
+    return this.productsService.findOne(id);
+  }
   @Post()
   create(@Body() payload: any) {
     // return {
     //   message: 'accion de crear',
     //   payload,
     // };
-    return this.productsService.create(payload)
+    return this.productsService.create(payload);
   }
   @Put(':id')
-  
   update(@Param('id') id: number, @Body() payload: any) {
     // return {
     //   id,
     //   payload,
     // }
-    return this.productsService.update(+id, payload)
+    return this.productsService.update(+id, payload);
   }
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return {
-      id
-    }
+    return this.productsService.remove(+id);
   }
 }
